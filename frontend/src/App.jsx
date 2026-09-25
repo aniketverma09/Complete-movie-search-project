@@ -9,7 +9,6 @@ import MovieModal from "./components/MovieModal.jsx";
 
 import {
     searchMovies,
-    getMovieDetails,
     getHistory,
     deleteHistoryItem,
     clearHistory
