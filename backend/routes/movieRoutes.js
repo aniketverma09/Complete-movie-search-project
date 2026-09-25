@@ -46,7 +46,7 @@ router.get("/search", async (req, res) => {
 
             return res.status(400).json({
                 message: "Movie search query is required."
-            });
+            })
 
         }
 
@@ -168,21 +168,16 @@ router.get("/:id", async (req, res) => {
             movie
         });
 
-    } catch (error) {
+   } catch (error) {
 
-        console.error(
-            "Movie Details Error:",
-            error
-        );
+    console.error("Movie Search Error:", error);
 
-        res.status(500).json({
-            message:
-                error.message ||
-                "Unable to get movie details."
-        });
-
-    }
-
+    res.status(500).json({
+        success: false,
+        message: error.message || "Unable to search movies.",
+        error: error.toString()
+    });
+}
 });
 
 
