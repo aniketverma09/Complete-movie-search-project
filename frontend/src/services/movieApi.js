@@ -1,138 +1,35 @@
-const API_BASE =
-    "https://complete-movie-search-project.onrender.com/api";
+const API_URL = "https://YOUR-RENDER-BACKEND.onrender.com/api";
 
-// =========================================
-// SEARCH MOVIES
-// =========================================
-
-export async function searchMovies(
-    query,
-    country = ""
-) {
-
-    const url =
-        `${API_BASE}/movies/search` +
-        `?q=${encodeURIComponent(query)}` +
-        `&country=${encodeURIComponent(country)}`;
-
-    const response = await fetch(url);
-
-    const data = await response.json();
-
-    if (!response.ok) {
-
-        throw new Error(
-            data.message ||
-            "Unable to search movies."
-        );
-
-    }
-
-    return data;
-}
-
-
-// =========================================
-// MOVIE DETAILS
-// =========================================
-
-export async function getMovieDetails(imdbID) {
-
+export const searchMovies = async (query) => {
     const response = await fetch(
-        `${API_BASE}/movies/${imdbID}`
+        `${API_URL}/movies/search?query=${encodeURIComponent(query)}`
     );
 
-    const data = await response.json();
-
     if (!response.ok) {
-
-        throw new Error(
-            data.message ||
-            "Unable to get movie details."
-        );
-
+        throw new Error("Failed to search movies");
     }
 
-    return data;
-}
+    return response.json();
+};
 
-
-// =========================================
-// GET HISTORY
-// =========================================
-
-export async function getHistory() {
-
-    const response = await fetch(
-        `${API_BASE}/history`
-    );
-
-    const data = await response.json();
+export const getHistory = async () => {
+    const response = await fetch(`${API_URL}/history`);
 
     if (!response.ok) {
-
-        throw new Error(
-            data.message ||
-            "Unable to load history."
-        );
-
+        throw new Error("Failed to fetch history");
     }
 
-    return data;
-}
+    return response.json();
+};
 
-
-// =========================================
-// DELETE HISTORY
-// =========================================
-
-export async function deleteHistoryItem(id) {
-
-    const response = await fetch(
-        `${API_BASE}/history/${id}`,
-        {
-            method: "DELETE"
-        }
-    );
-
-    const data = await response.json();
+export const deleteHistory = async (id) => {
+    const response = await fetch(`${API_URL}/history/${id}`, {
+        method: "DELETE",
+    });
 
     if (!response.ok) {
-
-        throw new Error(
-            data.message ||
-            "Unable to delete history."
-        );
-
+        throw new Error("Failed to delete history");
     }
 
-    return data;
-}
-
-
-// =========================================
-// CLEAR HISTORY
-// =========================================
-
-export async function clearHistory() {
-
-    const response = await fetch(
-        `${API_BASE}/history`,
-        {
-            method: "DELETE"
-        }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-
-        throw new Error(
-            data.message ||
-            "Unable to clear history."
-        );
-
-    }
-
-    return data;
-}
+    return response.json();
+};
