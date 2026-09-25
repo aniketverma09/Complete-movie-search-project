@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://complete-movie-search-project.onrender.com";
 
 // =========================================
 // SEARCH MOVIES
@@ -10,7 +10,6 @@ export async function searchMovies(query, country = "") {
         `${API_BASE}/movies/search` +
         `?q=${encodeURIComponent(query)}` +
         `&country=${encodeURIComponent(country)}`;
-
     const response = await fetch(url);
 
     const data = await response.json();
