@@ -4,59 +4,80 @@ import dotenv from "dotenv";
 
 import connectDB from "./config/db.js";
 
-import movieRoutes from "./routes/movieRoutes.js"
+import movieRoutes from "./routes/movieRoutes.js";
 import historyRoutes from "./routes/historyRoutes.js";
 
-
-/* =========================================
-   ENVIRONMENT
-========================================= */
+// =========================================
+// ENVIRONMENT
+// =========================================
 
 dotenv.config();
 
-
-/* =========================================
-   APP
-========================================= */
+// =========================================
+// APP
+// =========================================
 
 const app = express();
 
+// =========================================
+// CORS
+// =========================================
 
-/* =========================================
-   MIDDLEWARE
-========================================= */
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://complete-movie-search-project.vercel.app"
+];
 
 app.use(
     cors({
-        origin: "http://localhost:5173",
-        methods: ["GET", "DELETE"],
-        allowedHeaders: ["Content-Type"]
+        origin: function (origin, callback) {
+
+            // Allow requests without origin
+            // such as Postman/server requests
+            if (!origin) {
+                return callback(null, true);
+            }
+
+            if (allowedOrigins.includes(origin)) {
+                return callback(null, true);
+            }
+
+            return callback(
+                new Error("Not allowed by CORS")
+            );
+        },
+
+        methods: ["GET", "POST", "DELETE", "OPTIONS"],
+
+        allowedHeaders: [
+            "Content-Type",
+            "Authorization"
+        ]
     })
 );
 
-app.use(
-    express.json()
-);
+// =========================================
+// BODY PARSER
+// =========================================
 
+app.use(express.json());
 
-/* =========================================
-   ROOT
-========================================= */
+// =========================================
+// ROOT
+// =========================================
 
 app.get("/", (req, res) => {
 
     res.json({
         success: true,
-        message:
-            "Global Movie Search API is running."
+        message: "Global Movie Search API is running."
     });
 
 });
 
-
-/* =========================================
-   ROUTES
-========================================= */
+// =========================================
+// ROUTES
+// =========================================
 
 app.use(
     "/api/movies",
@@ -68,35 +89,36 @@ app.use(
     historyRoutes
 );
 
-
-/* =========================================
-   ERROR HANDLER
-========================================= */
+// =========================================
+// ERROR HANDLER
+// =========================================
 
 app.use(
     (err, req, res, next) => {
 
         console.error(
             "Server Error:",
-            err
+            err.message
         );
 
         res.status(500).json({
-            message:
-                "Internal server error."
+            success: false,
+            message: "Internal server error."
         });
 
     }
 );
 
-
-/* =========================================
-   START SERVER
-========================================= */
+// =========================================
+// PORT
+// =========================================
 
 const PORT =
     process.env.PORT || 5000;
 
+// =========================================
+// START SERVER
+// =========================================
 
 const startServer = async () => {
 
@@ -109,7 +131,7 @@ const startServer = async () => {
             () => {
 
                 console.log(
-                    `Server running on http://localhost:${PORT}`
+                    `Server running on port ${PORT}`
                 );
 
             }
@@ -127,6 +149,5 @@ const startServer = async () => {
     }
 
 };
-
 
 startServer();
