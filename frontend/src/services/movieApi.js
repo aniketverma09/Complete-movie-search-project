@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://complete-movie-search-project.onrender.com";
 
 // ===============================
 // SEARCH MOVIES
@@ -6,18 +6,18 @@ const API_URL = "http://localhost:5000/api";
 
 export const searchMovies = async (query) => {
     const response = await fetch(
-        `${API_URL}/movies/search?query=${encodeURIComponent(query)}`
+        `${API_URL}/api/movies/search?query=${encodeURIComponent(query)}`
     );
 
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+    const data = await response.json().catch(() => ({}));
 
+    if (!response.ok) {
         throw new Error(
-            errorData.message || "Failed to search movies"
+            data.message || "Failed to search movies"
         );
     }
 
-    return response.json();
+    return data;
 };
 
 
@@ -27,18 +27,18 @@ export const searchMovies = async (query) => {
 
 export const getHistory = async () => {
     const response = await fetch(
-        `${API_URL}/history`
+        `${API_URL}/api/history`
     );
 
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+    const data = await response.json().catch(() => ({}));
 
+    if (!response.ok) {
         throw new Error(
-            errorData.message || "Failed to fetch history"
+            data.message || "Failed to fetch history"
         );
     }
 
-    return response.json();
+    return data;
 };
 
 
@@ -48,21 +48,21 @@ export const getHistory = async () => {
 
 export const deleteHistoryItem = async (id) => {
     const response = await fetch(
-        `${API_URL}/history/${id}`,
+        `${API_URL}/api/history/${id}`,
         {
             method: "DELETE",
         }
     );
 
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+    const data = await response.json().catch(() => ({}));
 
+    if (!response.ok) {
         throw new Error(
-            errorData.message || "Failed to delete history"
+            data.message || "Failed to delete history"
         );
     }
 
-    return response.json();
+    return data;
 };
 
 
@@ -72,19 +72,19 @@ export const deleteHistoryItem = async (id) => {
 
 export const clearHistory = async () => {
     const response = await fetch(
-        `${API_URL}/history`,
+        `${API_URL}/api/history`,
         {
             method: "DELETE",
         }
     );
 
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
+    const data = await response.json().catch(() => ({}));
 
+    if (!response.ok) {
         throw new Error(
-            errorData.message || "Failed to clear history"
+            data.message || "Failed to clear history"
         );
     }
 
-    return response.json();
+    return data;
 };
