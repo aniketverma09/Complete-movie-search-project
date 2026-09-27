@@ -25,6 +25,12 @@ app.get("/", (req, res) => {
 app.use("/api/movies", movieRoutes);
 app.use("/api/history", historyRoutes);
 
+
+console.log(
+    "OMDB_API_KEY:",
+    process.env.OMDB_API_KEY ? "LOADED ✅" : "MISSING ❌"
+);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
